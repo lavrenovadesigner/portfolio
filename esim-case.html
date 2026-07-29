@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eSIM & MNP — Anastasiia Lavrenova</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f2f2f0; --surface: #ffffff; --ink: #1a1a18;
+    --muted: #4a4a46; --line: #e0e0de; --accent: #2563eb;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; background: var(--bg); border-bottom: 0.5px solid var(--line); }
+  .nav-name { font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--ink); }
+  .nav-back { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--accent); }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 8rem 3rem 5rem; }
+
+  .case-header { border-top: 0.5px solid var(--line); padding-top: 2.5rem; margin-bottom: 3rem; }
+  .case-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .case-title { font-family: var(--sans); font-size: clamp(28px, 4.5vw, 44px); font-weight: 600; line-height: 1.1; margin-bottom: 1.25rem; }
+  .case-hook { font-size: 16px; color: var(--muted); line-height: 1.7; max-width: 620px; }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 0.5px solid var(--line); border-radius: 12px; overflow: hidden; margin: 2.5rem 0; }
+  .metric { background: var(--surface); padding: 1.25rem 1rem; }
+  .metric-val { font-size: 28px; font-weight: 600; line-height: 1; margin-bottom: 4px; color: var(--accent); }
+  .metric-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .section-row { display: grid; grid-template-columns: 160px 1fr; gap: 2.5rem; padding: 2rem 0; border-top: 0.5px solid var(--line); }
+  .section-label { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); padding-top: 3px; line-height: 1.6; }
+  .section-body { font-size: 14px; line-height: 1.75; color: var(--ink); }
+  .section-body p + p { margin-top: 0.75rem; }
+  .section-body strong { font-weight: 500; }
+  .dim { color: var(--muted); }
+
+  /* FUNNEL */
+  .funnel { background: var(--surface); border: 0.5px solid var(--line); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
+  .funnel-title { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 1.25rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .funnel-step { display: grid; grid-template-columns: 140px 1fr 60px; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+  .funnel-label { font-size: 13px; color: var(--muted); }
+  .funnel-bar-bg { height: 8px; background: #ebebea; border-radius: 4px; }
+  .funnel-bar-fill { height: 8px; border-radius: 4px; background: var(--accent); }
+  .funnel-bar-fill.lost { background: #e5e7eb; }
+  .funnel-pct { font-size: 13px; font-weight: 500; text-align: right; }
+  .funnel-pct.lost { color: #9ca3af; }
+  .funnel-drop { font-size: 11px; color: #ef4444; margin-top: 2px; }
+  .funnel-divider { height: 0.5px; background: var(--line); margin: 0.75rem 0; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 0.25rem; }
+  .step { display: grid; grid-template-columns: 28px 1fr; gap: 12px; }
+  .step-num { font-size: 11px; color: var(--accent); font-weight: 600; padding-top: 2px; }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .step-insight { font-size: 13px; margin-top: 6px; padding: 8px 12px; border-left: 2px solid var(--accent); color: var(--ink); line-height: 1.6; background: rgba(37,99,235,0.03); border-radius: 0 4px 4px 0; }
+
+  /* BEFORE/AFTER */
+  .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1rem; }
+  .ba-card { border-radius: 10px; padding: 1.1rem; border: 0.5px solid var(--line); }
+  .ba-card.before { background: #fafafa; }
+  .ba-card.after { background: rgba(37,99,235,0.03); border-color: rgba(37,99,235,0.2); }
+  .ba-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .ba-label.before { color: #9ca3af; }
+  .ba-label.after { color: var(--accent); }
+  .ba-text { font-size: 13px; line-height: 1.6; color: var(--ink); }
+  .ba-list { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+  .ba-list li { font-size: 13px; color: var(--muted); padding-left: 14px; position: relative; line-height: 1.5; }
+  .ba-list li::before { content: '—'; position: absolute; left: 0; color: #d1d5db; }
+  .ba-list.good li::before { content: '✓'; color: var(--accent); }
+
+  /* DECISIONS */
+  .decisions { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.25rem; }
+  .decision { padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px; border: 0.5px solid var(--line); }
+  .decision-q { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 6px; }
+  .decision-a { font-size: 13px; line-height: 1.6; }
+
+  /* SCREENS */
+  .screens-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; padding-top: 1.75rem; padding-bottom: 0.75rem; border-top: 0.5px solid var(--line); }
+  .screen-group { margin-bottom: 2.5rem; }
+  .screen-group-label { font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .screen-group-desc { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.55; }
+  .screens-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .screen-mobile { width: calc(25% - 8px); min-width: 140px; }
+  .screen-mobile img { width: 100%; border-radius: 16px; border: 0.5px solid var(--line); display: block; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .screen-wide img { width: 100%; border-radius: 10px; border: 0.5px solid var(--line); display: block; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .screen-caption { font-size: 11px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+  /* RESEARCH SLIDE */
+  .research-img { width: 100%; border-radius: 10px; border: 0.5px solid var(--line); display: block; margin-top: 1rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  /* OUTCOMES */
+  .outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1rem; }
+  .outcome { padding: 1rem 1.25rem; border: 0.5px solid var(--line); border-radius: 8px; }
+  .outcome-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+  .outcome-val { font-size: 13px; line-height: 1.55; }
+
+  .next { margin-top: 4rem; padding-top: 1.5rem; border-top: 0.5px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .next-label { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .next-link { font-size: 20px; font-weight: 600; color: var(--ink); text-decoration: none; transition: color 0.2s; }
+  .next-link:hover { color: var(--accent); }
+
+  .fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .page { padding: 6rem 1.5rem 4rem; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .section-row { grid-template-columns: 1fr; gap: 0.75rem; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .screens-row { gap: 8px; }
+    .screen-mobile { width: calc(50% - 4px); }
+    .outcomes { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="portfolio.html" class="nav-name">Anastasiia Lavrenova</a>
+  <a href="portfolio.html" class="nav-back">← All work</a>
+</nav>
+
+<div class="page">
+
+  <header class="case-header fade-in">
+    <p class="case-tag">BASE · Telenet · Telco · B2C · 2026 · In development Q4 2026</p>
+    <h1 class="case-title">eSIM & MNP Activation —<br>reducing a 43.7% drop-off</h1>
+    <p class="case-hook">Nearly half of customers who purchased eSIM never activated it. Analytics revealed a three-stage drop across the post-purchase flow. I redesigned the MNP and eSIM activation flows for BASE and Telenet — removing a login barrier for new customers, consolidating 5–6 screens into 3, and adding a recovery path for device incompatibility.</p>
+  </header>
+
+  <div class="metrics fade-in">
+    <div class="metric"><div class="metric-val">43.7%</div><div class="metric-label">of eSIM buyers never activated — baseline to improve</div></div>
+    <div class="metric"><div class="metric-val">5→3</div><div class="metric-label">screens in MNP flow after redesign</div></div>
+    <div class="metric"><div class="metric-val">2</div><div class="metric-label">brands — BASE & Telenet — same UX, different visual identity</div></div>
+    <div class="metric"><div class="metric-val">Q4 2026</div><div class="metric-label">launch · Q1 2027 first data readout</div></div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">My role</span>
+    <div class="section-body">
+      <p>UX Designer and UX lead. Owned the full flow — research, flow design, screen design, copy — and guided 2 designers on connected parts of the journey. Worked with an external research partner and coordinated dev handoff on legacy platform constraints.</p>
+      <p class="dim" style="font-size:13px;margin-top:0.5rem">Figma · Qlik · Adobe Analytics · ContentSquare</p>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">The problem</span>
+    <div class="section-body">
+      <p>eSIM orders were consistently outnumbering activations. The post-purchase journey had three separate drop-off stages — each one invisible to the team until analytics mapped them together.</p>
+
+      <div class="funnel">
+        <p class="funnel-title">Activation funnel — baseline (pre-redesign)</p>
+
+        <div class="funnel-step">
+          <span class="funnel-label">Purchased eSIM</span>
+          <div class="funnel-bar-bg"><div class="funnel-bar-fill" style="width:100%"></div></div>
+          <span class="funnel-pct">100%</span>
+        </div>
+
+        <div class="funnel-step">
+          <span class="funnel-label">Entered activation</span>
+          <div class="funnel-bar-bg"><div class="funnel-bar-fill" style="width:78.5%"></div></div>
+          <span class="funnel-pct">78.5%</span>
+        </div>
+        <div style="padding-left:140px;margin-top:-8px;margin-bottom:8px"><span class="funnel-drop">↓ 21.5% lost — login barrier for new customers</span></div>
+
+        <div class="funnel-step">
+          <span class="funnel-label">Completed MNP</span>
+          <div class="funnel-bar-bg"><div class="funnel-bar-fill" style="width:66.1%"></div></div>
+          <span class="funnel-pct">66.1%</span>
+        </div>
+        <div style="padding-left:140px;margin-top:-8px;margin-bottom:8px"><span class="funnel-drop">↓ 12.4% lost — fragmented porting flow, too many screens</span></div>
+
+        <div class="funnel-step">
+          <span class="funnel-label">Activated eSIM</span>
+          <div class="funnel-bar-bg"><div class="funnel-bar-fill" style="width:56.3%"></div></div>
+          <span class="funnel-pct" style="color:var(--accent);font-weight:600">56.3%</span>
+        </div>
+        <div style="padding-left:140px;margin-top:-8px"><span class="funnel-drop">↓ 9.8% lost — critical info buried, QR/PIN easy to miss</span></div>
+      </div>
+
+      <p style="margin-top:1rem">Three structural issues caused the drop:</p>
+      <p style="margin-top:0.5rem"><strong>New customers had no credentials.</strong> A login wall appeared right after purchase — before new customers had set up an account. The flow asked for something they didn't have.</p>
+      <p style="margin-top:0.5rem"><strong>MNP flow was fragmented.</strong> Up to 6 screens including a stepper overview, a separate review-and-accept screen, and a return-to-stepper — each one a drop-off point with no new decision being made.</p>
+      <p style="margin-top:0.5rem"><strong>Critical information was easy to miss.</strong> PIN codes, QR codes, and installation CTAs competed for attention on one dense screen. Users clicked "Continue" and skipped what they needed.</p>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Business goal</span>
+    <div class="section-body">
+      <p>Make eSIM the default choice over physical SIM by 2027. Immediate goal: increase activation rates by reducing drop-off across MNP and activation flows. Supporting goals: grow eSIM digital sales share, reduce support contacts from failed activations, reduce retail costs.</p>
+      <p class="dim" style="font-size:13px;margin-top:0.5rem">Market context: ~50% of devices eSIM-capable today · 85–95% by 2028 · eSIM sales stuck at ~6% · ~10% higher activation rates vs physical SIM when flow works</p>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Research</span>
+    <div class="section-body">
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div>
+            <p class="step-title">External qualitative research — existing flow</p>
+            <p class="step-desc">Partner agency ran interviews and usability tests on the current design before redesign started. Produced the customer journey map across 6 stages.</p>
+            <p class="step-insight">→ Three moments with highest impact: The Choice (discovery), The Preparation (post-order), The Recovery (device loss). The biggest barrier was invisibility — eSIM never reaching a clear choice moment, not active rejection.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div>
+            <p class="step-title">Analytics — Qlik + Adobe Analytics</p>
+            <p class="step-desc">Mapped existing flow against order-to-activation data. Identified the three drop-off stages and their exact percentages.</p>
+            <p class="step-insight">→ 21.5% lost before activation even started — at the credentials step. This was invisible in screen-count audits and only showed up when we looked at what customers actually had in hand at each step.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div>
+            <p class="step-title">Pre-development usability testing — redesigned flow</p>
+            <p class="step-desc">Tested the new MNP + activation flow with real customers before dev handoff.</p>
+            <p class="step-insight">→ Validated the single-screen porting decision. Confirmed the PID-based flow removed the credentials blocker. Users completed the flow without prompting on where to find required information.</p>
+          </div>
+        </div>
+      </div>
+
+      <img src="esim-research-journey.png" alt="Customer journey map" class="research-img">
+      <img src="esim-research-challenges.png" alt="Research challenges" class="research-img" style="margin-top:10px">
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Constraints</span>
+    <div class="section-body">
+      <p><strong>Legacy authentication.</strong> The platform required SMS self-authentication before certain actions — this couldn't be removed, only worked around.</p>
+      <p><strong>New customer credentials gap.</strong> New customers don't have account login credentials at the moment of purchase. Any solution had to work without a login.</p>
+      <p><strong>Device incompatibility after purchase.</strong> Compatibility issues surface only after the order is complete — a fix had to be a recovery path, not a prevention step.</p>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Key decisions</span>
+    <div class="section-body">
+      <div class="decisions">
+        <div class="decision">
+          <p class="decision-q">Why PID instead of account login?</p>
+          <p class="decision-a">New customers don't have credentials at the moment they most want to activate — right after purchase. Requiring login first meant asking for something they didn't have. PID (customer number from order confirmation) lets activation start immediately, without an account. Removed the biggest single drop-off point.</p>
+        </div>
+        <div class="decision">
+          <p class="decision-q">Why merge 5–6 MNP screens into 3?</p>
+          <p class="decision-a">The old flow split porting across a stepper overview, data entry, a separate review-and-accept screen, and a return-to-stepper — each transition a drop-off with no new decision being made. New design: current number shown prominently, subscription type selection with inline field reveal, T&C acceptance — one screen, one decision point. Then straight from MNP confirmation to activation.</p>
+        </div>
+        <div class="decision">
+          <p class="decision-q">Why split the activation screen into 2 steps?</p>
+          <p class="decision-a">The single dense activation screen put device selection, QR code, PIN code, and installation CTA all together. "Continue" was the dominant CTA — users followed it and missed the QR or PIN entirely. Separating device selection from installation makes the primary action impossible to skip.</p>
+        </div>
+        <div class="decision">
+          <p class="decision-q">Why add a physical SIM fallback for incompatible devices?</p>
+          <p class="decision-a">An incompatible device after purchase isn't a UX copy problem — it's a dead end. The customer has paid and now can't get connectivity. Adding the option to switch to physical SIM at the exact failure point keeps them in a completable flow instead of exiting them into support.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="fade-in">
+    <p class="screens-label">Design — before & after</p>
+
+    <div class="screen-group">
+      <p class="screen-group-label">MNP Flow — Number Transfer</p>
+      <p class="screen-group-desc">Old flow: stepper overview → data entry → separate review screen → back to stepper → activation. New flow: direct to data entry with number visible, inline selection, T&C on same screen → straight to activation confirmation.</p>
+
+      <div class="ba-grid" style="margin-bottom:1.25rem">
+        <div class="ba-card before">
+          <p class="ba-label before">Before — 5+ screens</p>
+          <ul class="ba-list">
+            <li>Stepper overview (misclick-heavy, ContentSquare data)</li>
+            <li>Phone number hidden in header</li>
+            <li>Pre/Postpaid on separate screen, no inline reveal</li>
+            <li>Separate "Review and accept" screen</li>
+            <li>Return to stepper after MNP complete</li>
+          </ul>
+        </div>
+        <div class="ba-card after">
+          <p class="ba-label after">After — 3 screens</p>
+          <ul class="ba-list good">
+            <li>Stepper removed — direct to porting screen</li>
+            <li>Current number prominently shown with provider</li>
+            <li>Inline field reveal on Pre/Postpaid selection</li>
+            <li>T&C checkbox on same screen as data entry</li>
+            <li>MNP success → immediate device selection for eSIM</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="screens-row">
+        <div class="screen-mobile">
+          <img src="esim-activate-select.png" alt="eSIM selection">
+          <p class="screen-caption">eSIM selection</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-activate-selected.png" alt="eSIM selected">
+          <p class="screen-caption">Selected state</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-mnp-empty.png" alt="MNP — empty">
+          <p class="screen-caption">MNP — number + type</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-mnp-prepaid.png" alt="MNP — prepaid selected">
+          <p class="screen-caption">Prepaid inline</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-mnp-postpaid.png" alt="MNP — postpaid selected">
+          <p class="screen-caption">Postpaid inline</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-mnp-success.png" alt="MNP success → activation">
+          <p class="screen-caption">Success → activation</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <p class="screen-group-label">eSIM Activation — Install on this device</p>
+      <p class="screen-group-desc">Old: device selection + QR + PIN + install CTA on one screen — users clicked Continue and missed installation. New: device selection first, then dedicated installation screen with PIN visible and primary CTA as the only action.</p>
+
+      <div class="screens-row">
+        <div class="screen-mobile">
+          <img src="esim-install-this.png" alt="Install on this device">
+          <p class="screen-caption">Install on this device</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-enter-sim.png" alt="SIM details">
+          <p class="screen-caption">SIM details entry</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-install-another.png" alt="Install on another device">
+          <p class="screen-caption">Another device</p>
+        </div>
+        <div class="screen-mobile">
+          <img src="esim-install-another-qr.png" alt="QR code screen">
+          <p class="screen-caption">QR + PIN visible</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Results</span>
+    <div class="section-body">
+      <div class="outcomes">
+        <div class="outcome">
+          <p class="outcome-type">Baseline established</p>
+          <p class="outcome-val">43.7% of eSIM buyers never activated — three drop-off stages mapped with exact percentages. This is the number the redesign targets.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome-type">Pre-launch validation</p>
+          <p class="outcome-val">Usability testing confirmed: PID flow removed the credentials blocker, single-screen porting was completed without confusion, and PIN/QR were no longer missed.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome-type">In development</p>
+          <p class="outcome-val">Ships Q4 2026 across BASE and Telenet. First post-launch data readout planned Q1 2027 — will measure against the 56.3% baseline activation rate.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome-type">What I learned</p>
+          <p class="outcome-val">The biggest lever wasn't screen count — it was sequencing. The real blocker (login before credentials exist) was invisible in screen-count audits and only showed up when we looked at what customers actually had in hand at each step.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="next fade-in">
+    <span class="next-label">Next case</span>
+    <a href="base-internet-tv.html" class="next-link">BASE Internet &amp; TV Launch →</a>
+  </div>
+
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

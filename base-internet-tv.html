@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BASE Internet & TV — Anastasiia Lavrenova</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f2f2f0; --surface: #ffffff; --ink: #1a1a18;
+    --muted: #4a4a46; --line: #e0e0de; --accent: #2563eb;
+    --serif: 'DM Sans', sans-serif; --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; background: var(--bg); border-bottom: 0.5px solid var(--line); }
+  .nav-name { font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--ink); }
+  .nav-back { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--accent); }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 8rem 3rem 5rem; }
+
+  .case-header { border-top: 0.5px solid var(--line); padding-top: 2.5rem; margin-bottom: 3rem; }
+  .case-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .case-title { font-family: var(--serif); font-size: clamp(28px, 4.5vw, 44px); font-weight: 600; line-height: 1.1; margin-bottom: 1.25rem; }
+  .case-hook { font-size: 16px; color: var(--muted); line-height: 1.7; max-width: 580px; }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 0.5px solid var(--line); border-radius: 12px; overflow: hidden; margin: 2.5rem 0; }
+  .metric { background: var(--surface); padding: 1.25rem 1rem; }
+  .metric-val { font-family: var(--serif); font-size: 32px; font-weight: 600; line-height: 1; margin-bottom: 4px; color: var(--accent); }
+  .metric-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .section-row { display: grid; grid-template-columns: 160px 1fr; gap: 2.5rem; padding: 2rem 0; border-top: 0.5px solid var(--line); }
+  .section-label { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); padding-top: 3px; line-height: 1.6; }
+  .section-body { font-size: 14px; line-height: 1.75; color: var(--ink); }
+  .section-body p + p { margin-top: 0.75rem; }
+  .section-body strong { font-weight: 500; }
+  .dim { color: var(--muted); }
+
+  .steps { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 0.25rem; }
+  .step { display: grid; grid-template-columns: 28px 1fr; gap: 12px; }
+  .step-num { font-size: 11px; color: var(--accent); font-weight: 500; padding-top: 2px; }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .step-insight { font-size: 13px; margin-top: 6px; padding: 8px 12px; border-left: 2px solid var(--accent); color: var(--ink); line-height: 1.6; background: rgba(37,99,235,0.03); border-radius: 0 4px 4px 0; }
+
+  .decisions { display: flex; flex-direction: column; gap: 1rem; }
+  .decision { padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px; border: 0.5px solid var(--line); }
+  .decision-q { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 6px; }
+  .decision-a { font-size: 13px; line-height: 1.6; }
+
+  .scope-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 0.5rem; }
+  .scope-item { background: var(--surface); border: 0.5px solid var(--line); border-radius: 8px; padding: 0.85rem 1rem; }
+  .scope-tag { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .scope-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .scope-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .screens-title { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; padding-top: 2rem; padding-bottom: 0.75rem; border-top: 0.5px solid var(--line); }
+  .screen-group { margin-bottom: 2.5rem; }
+  .screen-group-label { font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .screen-group-desc { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+  .screen-pair { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+  .screen-img { width: 100%; border-radius: 8px; border: 0.5px solid var(--line); display: block; }
+
+  .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 0.5rem; }
+  .result-card { background: var(--surface); border: 0.5px solid var(--line); border-radius: 10px; padding: 1.1rem; }
+  .result-val { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+  .result-label { font-size: 12px; color: var(--ink); font-weight: 500; margin-bottom: 3px; }
+  .result-sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1rem; }
+  .outcome { padding: 1rem 1.25rem; border: 0.5px solid var(--line); border-radius: 8px; }
+  .outcome-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+  .outcome-val { font-size: 13px; line-height: 1.55; }
+
+  .live-link { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(37,99,235,0.3); padding-bottom: 1px; margin-top: 1rem; transition: opacity 0.2s; }
+  .live-link:hover { opacity: 0.7; }
+
+  .next { margin-top: 4rem; padding-top: 1.5rem; border-top: 0.5px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .next-label { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .next-link { font-family: var(--serif); font-size: 20px; color: var(--ink); text-decoration: none; transition: color 0.2s; }
+  .next-link:hover { color: var(--accent); }
+
+  .analytics-section { display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem; }
+  .analytics-item { display: flex; flex-direction: column; gap: 0.75rem; }
+  .analytics-caption { }
+  .analytics-label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); font-weight: 500; display: block; margin-bottom: 0.4rem; }
+  .analytics-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+  .analytics-img { width: 100%; border-radius: 10px; border: 0.5px solid var(--line); display: block; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+  .fade-in { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .page { padding: 6rem 1.5rem 4rem; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .section-row { grid-template-columns: 1fr; gap: 0.75rem; }
+    .screen-pair { grid-template-columns: 1fr; }
+    .scope-grid { grid-template-columns: 1fr 1fr; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .outcomes { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="portfolio.html" class="nav-name">Anastasiia Lavrenova</a>
+  <a href="portfolio.html" class="nav-back">← All work</a>
+</nav>
+
+<div class="page">
+
+  <header class="case-header fade-in">
+    <p class="case-tag">BASE · Telco · B2C · 2023–2024 · 9 months</p>
+    <h1 class="case-title">Launching Internet & TV for<br>Belgium's #1 mobile operator</h1>
+    <p class="case-hook">BASE was mobile-only. No product pages, no user trust, no design patterns to build from. I led design end-to-end — navigation, three landing pages, and a bundle configurator — in 9 months. Sales exceeded plan 3× in 2 months.</p>
+  </header>
+
+  <div class="metrics fade-in">
+    <div class="metric"><div class="metric-val">3×</div><div class="metric-label">planned sales exceeded in 2 months</div></div>
+    <div class="metric"><div class="metric-val">~20%</div><div class="metric-label">Order now conversion rate on configurator</div></div>
+    <div class="metric"><div class="metric-val">54.5%</div><div class="metric-label">users chose bundle (2+ products)</div></div>
+    <div class="metric"><div class="metric-val">27,652</div><div class="metric-label">orders via configurator (Jul–Oct 2024)</div></div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">My role</span>
+    <div class="section-body">
+      <p>Sole UX Designer. Owned full process from discovery to launch — research, strategy, all design surfaces, stakeholder workshops, usability testing, and post-launch iteration.</p>
+      <p class="dim" style="font-size:13px;margin-top:0.5rem">Figma · Adobe Analytics · ContentSquare · Optimal Workshop · Maze · ContextWeb</p>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">The problem</span>
+    <div class="section-body">
+      <p>BASE was a single-product company. Every system, every page, every user mental model was built around mobile. Adding Internet and TV wasn't a feature update — it was a business transformation.</p>
+      <p>The challenge had three layers:</p>
+      <div class="steps" style="margin-top:1rem">
+        <div class="step">
+          <span class="step-num">—</span>
+          <div><p class="step-title">Product</p><p class="step-desc">No pages existed. No way to find, compare, or buy Internet or TV. No design patterns to build from.</p></div>
+        </div>
+        <div class="step">
+          <span class="step-num">—</span>
+          <div><p class="step-title">Perception</p><p class="step-desc">Users didn't believe BASE could be an internet provider. Price and features weren't the barrier — trust was.</p></div>
+        </div>
+        <div class="step">
+          <span class="step-num">—</span>
+          <div><p class="step-title">Mental model</p><p class="step-desc">BASE was the first telco in Belgium to sell Internet and TV as separate products, not forced bundles. We couldn't borrow from convention — we had to build user understanding of an entirely new concept while simultaneously building the product.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Business goal</span>
+    <div class="section-body">
+      <p>Turn a single-product mobile operator into a multi-product provider — from zero, in 9 months, for up to 10 million users in Belgium.</p>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">What I designed</span>
+    <div class="section-body">
+      <div class="scope-grid">
+        <div class="scope-item"><div class="scope-tag">Redesigned</div><div class="scope-name">Navigation</div><div class="scope-sub">L1 + L2, tree-test informed</div></div>
+        <div class="scope-item"><div class="scope-tag">New</div><div class="scope-name">Internet page</div><div class="scope-sub">Landing + FAQ</div></div>
+        <div class="scope-item"><div class="scope-tag">New</div><div class="scope-name">TV page</div><div class="scope-sub">Landing + FAQ</div></div>
+        <div class="scope-item"><div class="scope-tag">New</div><div class="scope-name">Combine page</div><div class="scope-sub">Bundle value + FAQ</div></div>
+        <div class="scope-item"><div class="scope-tag">New</div><div class="scope-name">Configurator</div><div class="scope-sub">5 states × 3 breakpoints</div></div>
+        <div class="scope-item"><div class="scope-tag">New</div><div class="scope-name">Promo mechanics</div><div class="scope-sub">10% for life bundle discount</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Research & testing</span>
+    <div class="section-body">
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div>
+            <p class="step-title">Tree test — navigation structure</p>
+            <p class="step-desc">Tested 3 navigation models with existing BASE customers before any design work.</p>
+            <p class="step-insight">→ Users expected "Combine" as a top-level standalone entry, not nested under Mobile. This reshaped the entire nav structure — counterintuitive to stakeholders but validated by data.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div>
+            <p class="step-title">Qualitative interviews — 3 waves</p>
+            <p class="step-desc">Before design, mid-process, and post-launch with BASE customers and non-customers.</p>
+            <p class="step-insight">→ Trust was the primary barrier. "I didn't know BASE did internet." Shifted tone of voice on all three landing pages from product-focused to credibility-first.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div>
+            <p class="step-title">Usability testing — configurator format</p>
+            <p class="step-desc">One-page vs stepper — tested with real users before building.</p>
+            <p class="step-insight">→ Stepper felt like commitment. Users hesitated to go back. One-page won — users could see and adjust everything simultaneously.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">04</span>
+          <div>
+            <p class="step-title">Usability testing — promo comprehension</p>
+            <p class="step-desc">Full configurator flow with external research team — promo logic, login push, basket integration.</p>
+            <p class="step-insight">→ Users didn't understand when the discount applied. Redesigned pricing summary to show savings at every step, not just checkout.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">05</span>
+          <div>
+            <p class="step-title">A/B testing + ContentSquare post-launch</p>
+            <p class="step-desc">Navigation variants, landing page components, heatmaps on live product.</p>
+            <p class="step-insight">→ Tree-test navigation won. ContentSquare identified friction points that informed post-launch iterations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Key design decisions</span>
+    <div class="section-body">
+      <div class="decisions">
+        <div class="decision">
+          <p class="decision-q">Why a configurator instead of a forced bundle?</p>
+          <p class="decision-a">Research showed forced bundles no longer work — users want to self-select and control what they buy. The configurator was designed around that insight: choose any standalone product, and if you pick 2 or more, you automatically get 10% discount for life on each. The goal wasn't to push bundles — it was to make individual choice transparent and reward combination naturally. This also opened a clear upsell path: users who came for one product could see what adding another would cost them in real time.</p>
+        </div>
+        <div class="decision">
+          <p class="decision-q">Why one page, not a stepper — and why 5 states?</p>
+          <p class="decision-a">Research confirmed bundles don't work well when imposed. People want transparency and control. The configurator lives on one page precisely for this reason — new customers see exactly how the discount works and what comes next; existing customers see how their current products affect future discounts. The 5 states let us show each user only what's relevant to them, making the pricing logic clear rather than hidden.</p>
+        </div>
+        <div class="decision">
+          <p class="decision-q">How do you design for a brand users don't yet trust as a provider?</p>
+          <p class="decision-a">Every design decision was informed by one core research finding: users didn't believe BASE could be a reliable internet or TV provider. This shaped the tone of voice on landing pages, the order of information in the configurator, and the credibility signals throughout the flow. We designed trust before selling product — and validated this approach with qualitative interviews at three stages of the project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="fade-in">
+    <p class="screens-title">Design — selected screens</p>
+
+    <div class="screen-group">
+      <p class="screen-group-label">01 — Configurator, not logged in</p>
+      <p class="screen-group-desc">Anonymous users see the full product selection — Mobile, Internet, and TV — on one page. The key design goal: make the impact of each additional product on the final price immediately visible. Every product added triggers the Combo Promo −10% for life, shown in real time. The page is built to let users understand the discount logic themselves, without explanation.</p>
+      <div class="screen-pair">
+        <img src="config-notlogged-desktop.png" alt="Configurator not logged in — desktop" class="screen-img">
+        <img src="config-notlogged-mobile.png" alt="Configurator not logged in — mobile" class="screen-img">
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <p class="screen-group-label">02 — Configurator, logged in</p>
+      <p class="screen-group-desc">Logged-in users see their existing products first — and immediately how those products affect the discount on anything they add. This is the core upsell mechanic: an existing mobile customer sees that adding Internet or TV unlocks the Combo Promo −10% for life on all their products, including the ones they already pay for. Existing context makes the value of adding a product concrete, not abstract.</p>
+      <div class="screen-pair">
+        <img src="config-logged-desktop.png" alt="Configurator logged in — desktop" class="screen-img">
+        <img src="config-logged-mobile.png" alt="Configurator logged in — mobile" class="screen-img">
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <p class="screen-group-label">03 — Basket with combo discount applied</p>
+      <p class="screen-group-desc">The basket shows the full financial picture: each product with its original price struck through, combo advantage applied, and total lifetime savings visible before committing. "Total discount for life −€10/month" makes the promo concrete and immediate — reducing hesitation at the final step.</p>
+      <div style="max-width:380px">
+        <img src="config-basket.png" alt="Basket with combo discount" class="screen-img">
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row fade-in">
+    <span class="section-label">Results</span>
+    <div class="section-body">
+      <div class="results-grid">
+        <div class="result-card">
+          <div class="result-val">3×</div>
+          <div class="result-label">Sales exceeded plan</div>
+          <div class="result-sub">within 2 months of launch</div>
+        </div>
+        <div class="result-card">
+          <div class="result-val">~20%</div>
+          <div class="result-label">Order now conversion</div>
+          <div class="result-sub">stable across Jul–Oct 2024, 42,698 clicks</div>
+        </div>
+        <div class="result-card">
+          <div class="result-val">54.5%</div>
+          <div class="result-label">Chose bundle</div>
+          <div class="result-sub">2+ products — promo mechanic worked</div>
+        </div>
+        <div class="result-card">
+          <div class="result-val">27,652</div>
+          <div class="result-label">Total orders</div>
+          <div class="result-sub">via configurator, Jul–Oct 2024</div>
+        </div>
+        <div class="result-card">
+          <div class="result-val">217K</div>
+          <div class="result-label">Monthly page views</div>
+          <div class="result-sub">+148% vs same period prior year</div>
+        </div>
+        <div class="result-card">
+          <div class="result-val">29.1%</div>
+          <div class="result-label">Cart to order rate</div>
+          <div class="result-sub">overall configurator completion</div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS SCREENSHOTS -->
+      <div class="analytics-section">
+
+        <div class="analytics-item">
+          <div class="analytics-caption">
+            <span class="analytics-label">Page views — Adobe Analytics · Jul–Oct 2024</span>
+            <p class="analytics-desc">217,768 visits in the current month — up from 87,839 a year prior (+148%). The configurator established itself as a primary entry point for product discovery across the BASE site, representing 1.5% of all page views.</p>
+          </div>
+          <img src="analytics-pageviews.png" alt="Page views dashboard" class="analytics-img">
+        </div>
+
+        <div class="analytics-item">
+          <div class="analytics-caption">
+            <span class="analytics-label">Order now clicks — Adobe Analytics · Jul–Oct 2024</span>
+            <p class="analytics-desc">Stable ~20% conversion rate across all four months — 42,698 "Order now" clicks from 217,768 visits. Consistency across months confirms this isn't a launch spike but a sustained product metric.</p>
+          </div>
+          <img src="analytics-ordernow.png" alt="Order now clicks" class="analytics-img">
+        </div>
+
+        <div class="analytics-item">
+          <div class="analytics-caption">
+            <span class="analytics-label">Bundle share — Adobe Analytics · Jul–Oct 2024</span>
+            <p class="analytics-desc">54.5% of users chose a bundle (2 or more products). The promo mechanic — 10% discount for life when combining — drove more than half of all configurator visits toward higher-LTV combinations. Standalone represented only 45.5%.</p>
+          </div>
+          <img src="analytics-bundle.png" alt="Config bundle share" class="analytics-img">
+        </div>
+
+        <div class="analytics-item">
+          <div class="analytics-caption">
+            <span class="analytics-label">Product attachment & conversion — Adobe Analytics · Jul–Oct 2024</span>
+            <p class="analytics-desc">Internet standalone led with 26.43% conversion and 1,833 orders (34.2% of all orders). Bundle 2p and 3p followed. Overall cart-to-order rate: 29.1%. The segment breakdown validated the 5-state account logic — each segment converted differently, confirming personalisation was the right approach.</p>
+          </div>
+          <img src="analytics-attachment.png" alt="Product attachment conversion rates" class="analytics-img">
+        </div>
+
+        <div class="analytics-item">
+          <div class="analytics-caption">
+            <span class="analytics-label">Funnel fallout — Adobe Analytics · Jan 2024–May 2026</span>
+            <p class="analytics-desc">From 1.1M configurator visits: 10.7% reached checkout (118,350), 2.5% completed an order (27,652). The "without basket" path shows 11.5% clicked through directly to checkout — a faster path for returning or high-intent users built intentionally into the logged-in flow.</p>
+          </div>
+          <img src="analytics-fallout.png" alt="Fallout funnel" class="analytics-img">
+        </div>
+
+      </div>
+
+      <div class="outcomes" style="margin-top:1.5rem">
+        <div class="outcome">
+          <p class="outcome-type">Qualitative</p>
+          <p class="outcome-val">Post-launch interviews confirmed brand perception shift — users now associating BASE with internet. The trust problem we designed for had been solved.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome-type">What I learned</p>
+          <p class="outcome-val">Start with development constraints before designing — understanding technical limitations early prevents rework late. And divide usability testing into small, focused tests rather than trying to cover all flows at once. Targeted tests surface sharper insights and are easier to act on.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome-type">What I'd do differently</p>
+          <p class="outcome-val">Start accessibility audit earlier. Legal constraints late in the project caused rework on several components — earlier involvement would have prevented that.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome-type">Business impact</p>
+          <p class="outcome-val">BASE transformed from a single-product mobile operator into a multi-product provider. Every Internet or TV subscriber is now a cross-sell-ready customer with higher LTV.</p>
+        </div>
+      </div>
+
+      <a href="https://www.base.be/en/tools/configurator.html" target="_blank" class="live-link">View live product → base.be/configurator</a>
+    </div>
+  </div>
+
+  <div class="next fade-in">
+    <span class="next-label">Next case</span>
+    <a href="pre2post-case.html" class="next-link">Pre to Post — Segmentation →</a>
+  </div>
+
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
