@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anastasiia Lavrenova — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --serif: 'DM Sans', sans-serif;
+    --sans: 'DM Sans', sans-serif;
+    --ink: #1a1a18;
+    --muted: #666660;
+    --faint: #2a2a28;
+    --bg: #f2f2f0;
+    --white: #1a1a18;
+    --accent: #2563eb;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem;
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--faint);
+  }
+  .nav-name { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--ink); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  /* SECTIONS */
+  section { padding: 7rem 3rem 5rem; max-width: 1100px; margin: 0 auto; }
+  section:first-of-type { padding-top: 10rem; }
+
+  /* HERO */
+  .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; padding-top: 8rem; }
+  .hero-eyebrow { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 6vw, 68px);
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    max-width: 800px;
+  }
+  .hero-title em { font-style: italic; color: var(--muted); }
+  .hero-sub { font-size: 15px; color: var(--muted); max-width: 420px; line-height: 1.7; margin-bottom: 2.5rem; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 2px; letter-spacing: 0.02em; transition: opacity 0.2s; }
+  .hero-cta:hover { opacity: 0.5; }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 0.5px solid var(--faint); }
+  .section-title { font-family: var(--serif); font-size: 13px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
+  /* CASES */
+  .cases-list { display: flex; flex-direction: column; }
+  .case-item {
+    display: grid;
+    grid-template-columns: 48px 1fr 280px;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 0.5px solid var(--faint);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s;
+    align-items: start;
+  }
+  .case-item:first-child { border-top: 0.5px solid var(--faint); }
+  .case-item:hover { opacity: 0.6; }
+  .case-num { font-family: var(--serif); font-size: 13px; color: var(--muted); padding-top: 4px; }
+  .case-main {}
+  .case-tags { display: flex; gap: 6px; margin-bottom: 0.6rem; flex-wrap: wrap; }
+  .case-tag { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+  .case-tag + .case-tag::before { content: '·'; margin-right: 6px; }
+  .case-name { font-family: var(--serif); font-size: clamp(22px, 3vw, 30px); font-weight: 300; line-height: 1.2; margin-bottom: 0.5rem; }
+  .case-role { font-size: 13px; color: var(--muted); }
+  .case-right { text-align: right; padding-top: 4px; }
+  .case-outcome { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .case-outcome-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .case-placeholder .case-name { color: var(--muted); }
+  .case-placeholder .case-outcome { color: var(--muted); font-weight: 400; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-left {}
+  .about-title { font-family: var(--serif); font-size: clamp(32px, 4vw, 48px); font-weight: 600; line-height: 1.15; margin-bottom: 1.5rem; }
+  .about-title em { font-style: italic; color: var(--muted); }
+  .about-text { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .about-text strong { font-weight: 500; color: var(--ink); }
+  .about-right {}
+  .skills-block { margin-bottom: 2rem; }
+  .skills-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; }
+  .skills-list { font-size: 13px; color: var(--ink); line-height: 2; }
+  .cv-link { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 10px 20px; margin-top: 1rem; transition: all 0.2s; letter-spacing: 0.02em; }
+  .cv-link:hover { background: var(--accent); color: #ffffff; }
+
+  /* ARCHIVE */
+  .archive-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--faint); border: 0.5px solid var(--faint); }
+  .archive-item { background: var(--bg); padding: 1.5rem; text-decoration: none; color: inherit; transition: background 0.2s; }
+  .archive-item:hover { background: var(--white); }
+  .archive-year { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .archive-name { font-family: var(--serif); font-size: 18px; font-weight: 300; line-height: 1.3; margin-bottom: 0.4rem; }
+  .archive-co { font-size: 12px; color: var(--muted); }
+
+  /* FOOTER */
+  footer { border-top: 0.5px solid var(--faint); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; max-width: 100%; }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--ink); }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 6rem 1.5rem 4rem; }
+    .hero-title { font-size: 44px; }
+    .case-item { grid-template-columns: 32px 1fr; }
+    .case-right { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .archive-grid { grid-template-columns: 1fr 1fr; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-name">Anastasiia Lavrenova</a>
+  <ul class="nav-links">
+    <li><a href="#work" class="active">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#archive">Archive</a></li>
+    <li><a href="mailto:your@email.com">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="top">
+  <p class="hero-eyebrow fade-in">Product Designer · Belgium</p>
+  <h1 class="hero-title fade-in" style="transition-delay:0.1s">
+    I bridge UX and business<br>through <em>structured,<br>measurable</em> design.
+  </h1>
+  <p class="hero-sub fade-in" style="transition-delay:0.2s">
+    Senior Product Designer focused on growth, conversion, and product strategy. Currently at BASE (Telenet Group), Belgium.
+  </p>
+  <a href="mailto:your@email.com" class="hero-cta fade-in" style="color:var(--accent);border-color:var(--accent)" style="transition-delay:0.3s">
+    Get in touch →
+  </a>
+</section>
+
+<section id="work">
+  <div class="section-header">
+    <span class="section-title">Selected work</span>
+  </div>
+  <div class="cases-list">
+
+    <a href="base-internet-tv.html" class="case-item fade-in">
+      <span class="case-num" style="color:var(--accent)">01</span>
+      <div class="case-main">
+        <div class="case-tags">
+          <span class="case-tag">BASE</span>
+          <span class="case-tag">Telco · B2C</span>
+          <span class="case-tag">2023</span>
+        </div>
+        <h2 class="case-name">Launching Internet & TV for Belgium's #1 mobile operator</h2>
+        <p class="case-role">Product Designer — end to end · Navigation · Landing pages · Configurator</p>
+      </div>
+      <div class="case-right">
+        <p class="case-outcome">3× planned sales</p>
+        <p class="case-outcome-label">exceeded in 2 months</p>
+      </div>
+    </a>
+
+    <a href="pre2post-case.html" class="case-item fade-in">
+      <span class="case-num" style="color:var(--accent)">02</span>
+      <div class="case-main">
+        <div class="case-tags">
+          <span class="case-tag">BASE</span>
+          <span class="case-tag">Segmentation · Growth</span>
+          <span class="case-tag">2025</span>
+        </div>
+        <h2 class="case-name">Converting prepaid customers to postpaid through segmentation</h2>
+        <p class="case-role">Product Designer · Analytics · A/B testing · ContentSquare</p>
+      </div>
+      <div class="case-right">
+        <p class="case-outcome">+54% digital migrations</p>
+        <p class="case-outcome-label">in 3 months post-launch</p>
+      </div>
+    </a>
+
+    <div class="case-item case-placeholder fade-in" style="cursor:default">
+      <span class="case-num" style="color:var(--accent)">03</span>
+      <div class="case-main">
+        <div class="case-tags">
+          <span class="case-tag">Coming soon</span>
+        </div>
+        <h2 class="case-name">Next case study</h2>
+        <p class="case-role">—</p>
+      </div>
+      <div class="case-right">
+        <p class="case-outcome">—</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-header">
+    <span class="section-title">About</span>
+  </div>
+  <div class="about-grid">
+    <div class="about-left fade-in">
+      <h2 class="about-title">Designing products that <em>move metrics</em> and make sense to people.</h2>
+      <p class="about-text">
+        <strong>I'm Anastasiia</strong> — a Senior Product Designer based in Belgium with 4+ years of experience in telco and B2C products.
+      </p>
+      <p class="about-text">
+        I specialise in growth-oriented design: conversion funnels, segmentation, A/B testing, and product launches. I work at the intersection of user needs and business goals — translating research and data into design decisions that drive measurable impact.
+      </p>
+      <p class="about-text">
+        Currently at BASE (Telenet Group), where I've shipped everything from new product configurators to retention flows — as the sole designer, end to end.
+      </p>
+    </div>
+    <div class="about-right fade-in" style="transition-delay:0.1s">
+      <div class="skills-block">
+        <p class="skills-label">Focus areas</p>
+        <p class="skills-list">
+          Conversion optimisation<br>
+          Growth & funnel design<br>
+          Segmentation & personalisation<br>
+          A/B testing & experimentation<br>
+          Product strategy & research
+        </p>
+      </div>
+      <div class="skills-block">
+        <p class="skills-label">Tools</p>
+        <p class="skills-list">
+          Figma · Adobe Analytics<br>
+          ContentSquare · Qlik<br>
+          Optimal Workshop · Maze
+        </p>
+      </div>
+      <div class="skills-block">
+        <p class="skills-label">Experience</p>
+        <p class="skills-list">
+          BASE / Telenet Group, Belgium<br>
+          Senior Product Designer, 2021–present
+        </p>
+      </div>
+      <a href="#" class="cv-link">Download CV ↓</a>
+    </div>
+  </div>
+</section>
+
+<section id="archive">
+  <div class="section-header">
+    <span class="section-title">Archive</span>
+  </div>
+  <div class="archive-grid">
+    <div class="archive-item fade-in">
+      <p class="archive-year">2024</p>
+      <p class="archive-name">Wi-Fi Booster</p>
+      <p class="archive-co">BASE · Product page</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.05s">
+      <p class="archive-year">2024</p>
+      <p class="archive-name">Leave BASE</p>
+      <p class="archive-co">BASE · Retention flow</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.1s">
+      <p class="archive-year">2024</p>
+      <p class="archive-name">AI Chat</p>
+      <p class="archive-co">BASE · Internal product</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.15s">
+      <p class="archive-year">2023</p>
+      <p class="archive-name">HW Shop</p>
+      <p class="archive-co">BASE · E-commerce</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.2s">
+      <p class="archive-year">2023</p>
+      <p class="archive-name">Upsell — INT & TV</p>
+      <p class="archive-co">BASE · Mobile clients</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.25s">
+      <p class="archive-year">2023</p>
+      <p class="archive-name">AI Chat Entry Points</p>
+      <p class="archive-co">BASE · Growth</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.3s">
+      <p class="archive-year">2024</p>
+      <p class="archive-name">Dreso.AI — Enterprise Chat</p>
+      <p class="archive-co">Drees & Sommer · Design system · White label</p>
+    </div>
+    <div class="archive-item fade-in" style="transition-delay:0.35s">
+      <p class="archive-year">2026</p>
+      <p class="archive-name">HW Shop — Journey Owner</p>
+      <p class="archive-co">BASE · E-commerce · Business requirements</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">Anastasiia Lavrenova · 2026</span>
+  <div class="footer-links">
+    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+    <a href="mailto:your@email.com">Email</a>
+    <a href="#">CV ↓</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
